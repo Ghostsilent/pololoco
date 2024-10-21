@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/icons8-gameboy-64.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <script src="js/models/drawable-object.class.js"></script>
+    <script src="js/models/movable-object.class.js"></script>
+    <script src="js/models/character.class.js"></script>
+    <script src="js/models/chicken.class.js"></script>
+    <script src="js/models/chick.class.js"></script>
+    <script src="js/models/cloud.class.js"></script>
+    <script src="js/models/status-bar.class.js"></script>
+    <script src="js/models/bottle-status-bar.class.js"></script>
+    <script src="js/models/coin-status-bar.class.js"></script>
+    <script src="js/models/world.class.js"></script>
+    <script src="js/models/background-object.class.js"></script>
+    <script src="js/models/keyboard.class.js"></script>
+    <script src="js/models/level.class.js"></script>
+    <script src="js/models/throwable-object.class.js"></script>
+    <script src="js/models/endboss.class.js"></script>
+    <script src="js/models/levels/level1.js"></script>
+    <script src="js/models/bottle.class.js"></script>
+    <script src="js/models/coin.class.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/models/endboss-status-bar.class.js"></script>
+</head>
+
+<body onload="showStartScreen(); init()">
+    <h1>El pollo loco</h1>
+
+    <div id="game-container" style="position: relative; display: inline-block;">
+        <!-- Startbildschirm Canvas -->
+        <canvas id="start-screen-canvas" width="720" height="480"></canvas>
+        <!-- Hauptspiel Canvas -->
+        <canvas id="canvas" width="720" height="480" style="display: none;"></canvas>
+
+        <!-- Game Over Canvas -->
+        <canvas id="game-over-canvas" width="720" height="480"
+            style="display: none; position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
+
+        <!-- START Button -->
+        <button id="start-button" onclick="startGame()"
+            style="display: none; position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%); padding: 15px 30px; font-size: 24px; font-weight: bold; background-color: #8B4513; color: white; border: 2px solid #8B0000; cursor: pointer; border-radius: 10px; box-shadow: 3px 3px 8px #000;">
+            START
+        </button>
+
+        <div id="controls-popup" class="popup">
+            <div class="popup-content">
+                <span class="close-button" onclick="closeControlsPopup()">&times;</span>
+                <h2>Steuerung</h2>
+                <p>
+                    <img src="img/icons8-left-50.png" class="control-icon-svg" alt="Pfeiltaste Links">
+                    Nach links laufen
+                </p>
+                <p>
+                    <img src="img/icons8-right-50.png" class="control-icon-svg" alt="Pfeiltaste Rechts">
+                    Nach rechts laufen
+                </p>
+                <p>
+                    <img src="img/icons8-d-64.png" class="control-icon-svg" alt="Taste D">Werfen
+                </p>
+                <p>
+                    <img src="img/icons8-jump-50.png" class="control-icon-svg" alt="Taste D">Springen
+                </p>
+            </div>
+        </div>
+        
+
+        <!-- Symbole für Sound, Vollbild und Steuerung -->
+        <div class="controls">
+            <img id="sound-icon" src="img/soundimage.png" alt="Sound Icon" class="control-icon" onclick="toggleSound()">
+            <img src="img/gamecontroller.png" alt="Gamepad Icon" class="control-icon" onclick="showControlsPopup()">
+            <img src="img/fullscreen.png" alt="Fullscreen Icon" class="control-icon">
+        </div>
+
+    </div>
+</body>
+
+</html>
