@@ -61,6 +61,10 @@ class Character extends MoveableObject {
     deathSound = new Audio('audio/gameover.mp3'); // Sound-Datei für das Sterben des Spielers
     jumpSound = new Audio('audio/jump.mp3'); // Sound-Datei für das Springen
 
+    // Neue Eigenschaften zum Speichern der Interval-IDs
+    movementInterval;
+    animationInterval;
+
     jumpOnEnemy() {
         this.speedY = 25; // Setzt die Sprunghöhe
     }
@@ -121,8 +125,8 @@ class Character extends MoveableObject {
     }
 
     animate() {
-
-        setInterval(() => {
+        // Speichern der Interval-IDs
+        this.movementInterval = setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
@@ -152,26 +156,23 @@ class Character extends MoveableObject {
 
         let deathSoundPlayed = false; // Variable, um zu prüfen, ob der Sound bereits abgespielt wurde
 
-
-        setInterval(() => {
+        this.animationInterval = setInterval(() => {
             if (this.isDead()) {
-                if (!deathSoundPlayed && !isMuted) { // Prüfe, ob der Sound noch nicht abgespielt wurde und nicht gemutet ist
-                    this.deathSound.play(); // Sound abspielen
-                    deathSoundPlayed = true; // Markiere den Sound als abgespielt
+                if (!deathSoundPlayed && !isMuted) {
+                    this.deathSound.play();
+                    deathSoundPlayed = true;
                 }
                 this.playAnimation(this.IMAGES_DEAD);
                 setTimeout(() => {
-                    showGameOverScreen(); // Zeige den Game Over-Bildschirm
-                }, 1000); // Verzögerung von 1 Sekunde, bevor der Bildschirm angezeigt wird
+                    showGameOverScreen(); // Zeigt den Game Over-Bildschirm
+                    this.world.stopGame(); // Hier wird das Spiel gestoppt
+                }, 2000); // 2 Sekunden Verzögerung nach dem Tod des Spielers
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else {
-
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-
-                    // walk Animation
                     this.playAnimation(this.IMAGES_WALKING);
                 }
             }

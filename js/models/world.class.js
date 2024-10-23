@@ -24,6 +24,9 @@ class World {
     musicPlaying = false; // Neue Eigenschaft, um den Status der Musik zu verfolgen
     throwSound = new Audio('audio/throw.mp3'); // Sound-Datei für das Werfen
 
+    // Neue Eigenschaften zum Speichern der Interval- und Animations-IDs
+    runInterval;
+    animationFrameId;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -37,7 +40,6 @@ class World {
         // Neue Methoden zur Initialisierung von Flaschen und Münzen
         this.createBottles();
         this.createCoins();
-
     }
 
     setWorld() {
@@ -51,7 +53,8 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        // Speichern der Interval-ID
+        this.runInterval = setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkEndbossCollisions();
@@ -66,10 +69,10 @@ class World {
             const viewDistance = 500; // Beispiel für die Sichtweite
 
             if (distanceToCharacter <= viewDistance && !endboss.isMoving) {
-                // Starte die Bewegung nach 5 Sekunden
+                // Starte die Bewegung nach 2 Sekunden
                 setTimeout(() => {
                     endboss.startMoving();
-                }, 2000); // 5000 Millisekunden = 5 Sekunden Verzögerung
+                }, 2000); // 2000 Millisekunden = 2 Sekunden Verzögerung
             }
         }
     }
@@ -197,7 +200,7 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
-        requestAnimationFrame(function () {
+        this.animationFrameId = requestAnimationFrame(function () {
             self.draw();
         });
     }
@@ -234,11 +237,59 @@ class World {
     }
 
     stopGame() {
-        clearInterval(this.runInterval); // Stoppt die Hauptspiel-Schleife
-        clearInterval(this.character.movementInterval); // Stoppt die Bewegungs-Intervalle des Charakters
-        clearInterval(this.character.animationInterval); // Stoppt die Animationen des Charakters
-        cancelAnimationFrame(this.animationFrameId); // Stoppt die laufende Zeichnung
+        // Stoppt die Hauptspiel-Schleife
+        clearInterval(this.runInterval);
+
+        // Stoppt die Bewegungs- und Animations-Intervalle des Charakters
+        clearInterval(this.character.movementInterval);
+        clearInterval(this.character.animationInterval);
+
+        // Stoppt die laufende Zeichnung
+        cancelAnimationFrame(this.animationFrameId);
     }
 
+    reset() {
+        // Stoppe die aktuelle Spielschleife
+        this.stopGame();
+    
+        // Setze den Charakter zurück
+        this.character = new Character();
+        this.character.world = this;  // Verknüpfe den Charakter mit der Welt
+    
+        // Setze die gesammelten Flaschen und Münzen zurück
+        this.collectedBottles = 0;
+        this.collectedCoins = 0;
+    
+        // Setze die Statusleisten zurück
+        this.bottleStatusBar.setPercentage(this.collectedBottles);
+        this.coinStatusBar.setPercentage(this.collectedCoins);
+        this.statusBar.setPercentage(this.character.energy);
+    
+        // Setze die Gegner und den Endboss zurück
+        this.level = level1;  // Lade das Level neu
+        this.bottles = [];
+        this.coins = [];
+    
+        // Flaschen und Münzen neu generieren
+        this.createBottles();
+        this.createCoins();
+    
+        // Setze die Endboss-Leiste und Energie zurück
+        this.endbossStatusBar.setPercentage(100);  // Setze die Energie des Endbosses auf 100%
+        this.level.enemies.forEach(enemy => {
+            if (enemy instanceof Endboss) {
+                enemy.energy = 100;  // Setze die Energie des Endbosses zurück
+            }
+        });
+    
+        // Setze die Kameraposition zurück
+        this.camera_x = 0;
+    
+        // Starte das Spiel neu
+        this.run();
+        this.draw();
+    }
+    
+    
+    
 }
-

@@ -15,8 +15,9 @@ body {
 #game-container {
     width: 100%;
     max-width: 720px;
-    position: relative;
+    position: relative; /* Wichtig für das absolute Positionieren des Game Over Screens */
     aspect-ratio: 3 / 2; /* Seitenverhältnis von 3:2 für das Canvas */
+    margin: 0 auto; /* Zentriert den game-container horizontal */
 }
 
 canvas {
@@ -43,6 +44,7 @@ button {
     background-color: #ffb900;
     padding-top: 6px;
     cursor: pointer;
+    transition: transform 0.2s;
 }
 
 button:hover {
@@ -170,4 +172,105 @@ button:hover {
     button {
         font-size: 36px;
     }
+}
+
+/* Aktualisierte Stile für den Game Over Screen */
+#game-over-screen {
+    position: absolute; /* Absolut relativ zum #game-container */
+    top: 0;
+    left: 0;
+    width: 100%; /* Volle Breite des game-container */
+    height: 100%; /* Volle Höhe des game-container */
+    display: flex;
+    justify-content: center; /* Zentriert horizontal */
+    align-items: center; /* Zentriert vertikal */
+    z-index: 1000; /* Sicherstellen, dass es über allen anderen Elementen liegt */
+    background-color: rgba(0, 0, 0, 0.7); /* Halbtransparenter Hintergrund */
+    display: none; /* Standardmäßig versteckt */
+    flex-direction: column; /* Ermöglicht das Stapeln von Bild und Button */
+}
+
+/* Stil für den "Neuer Versuch" Button */
+#restart-button {
+    border-radius: 14px;
+    width: 146px;
+    height: 55px;
+    font-size: 18px;
+    font-family: 'zabras', Arial, Helvetica, sans-serif;
+    background-color: #8B4513;
+    color: white;
+    border: 2px solid #8B0000;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 3px 3px 8px #000;
+    position: absolute; /* Absolute Positionierung innerhalb des Game Over Screens */
+    top: 20px; /* Abstand vom oberen Rand des Game Over Screens */
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 6px;
+    transition: transform 0.2s;
+}
+
+#restart-button:hover {
+    transform: translateX(-50%) scale(1.1);
+}
+
+/* Stil für das Game Over Bild */
+#game-over-screen img {
+    max-width: 100%; /* Responsives Anpassen der Bildgröße */
+    height: 100%;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    background-color: none;
+}
+
+
+/* Stil für den Win Screen */
+#win-screen {
+    position: absolute; /* Absolut relativ zum #game-container */
+    top: 0;
+    left: 0;
+    width: 100%; /* Volle Breite des game-container */
+    height: 100%; /* Volle Höhe des game-container */
+    display: flex;
+    justify-content: center; /* Zentriert horizontal */
+    align-items: center; /* Zentriert vertikal */
+    z-index: 1000; /* Sicherstellen, dass es über allen anderen Elementen liegt */
+    background-color: rgba(0, 0, 0, 0.7); /* Halbtransparenter Hintergrund */
+    display: none; /* Standardmäßig versteckt */
+    flex-direction: column; /* Ermöglicht das Stapeln von Bild und Button */
+}
+
+/* Stil für das Win-Screen-Bild */
+#win-screen img {
+    max-width: 100%; /* Responsives Anpassen der Bildgröße */
+    height: 21%;
+    
+    border-radius: 10px;
+    background-color: none;
+}
+
+/* Stil für den "Neuer Versuch" Button im Win Screen */
+#restart-button-win {
+    border-radius: 14px;
+    width: 146px;
+    height: 55px;
+    font-size: 18px;
+    font-family: 'zabras', Arial, Helvetica, sans-serif;
+    background-color: #8B4513;
+    color: white;
+    border: 2px solid #8B0000;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 3px 3px 8px #000;
+    position: absolute; /* Absolute Positionierung innerhalb des Win Screens */
+    top: 20px; /* Abstand vom oberen Rand des Win Screens */
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 6px;
+    transition: transform 0.2s;
+}
+
+#restart-button-win:hover {
+    transform: translateX(-50%) scale(1.1);
 }

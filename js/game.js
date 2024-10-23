@@ -128,23 +128,10 @@ function startGame() {
 }
 
 function showGameOverScreen() {
-    const gameOverCanvas = document.getElementById('game-over-canvas');
-    const ctx = gameOverCanvas.getContext('2d');
-
-    // Löscht den Inhalt, um sicherzustellen, dass der Hintergrund transparent bleibt
-    ctx.clearRect(0, 0, gameOverCanvas.width, gameOverCanvas.height);
-
-    const gameOverImage = new Image();
-    gameOverImage.src = 'img/9_intro_outro_screens/game_over/game over.png'; // Pfad zu deinem Game-Over-Bild
-
-    gameOverImage.onload = function () {
-        // Zeichnet das Bild auf dem transparenten Canvas
-        ctx.drawImage(gameOverImage, 0, 0, gameOverCanvas.width, gameOverCanvas.height);
-    };
-
-    // Zeige das Game Over Canvas als Overlay an, ohne das Hauptspiel-Canvas zu verstecken
-    gameOverCanvas.style.display = 'block';
+    const gameOverScreen = document.getElementById('game-over-screen');
+    gameOverScreen.style.display = 'flex'; // Zeige den Game Over Screen an
 }
+
 
 function showControlsPopup() {
     // Zeige das Pop-up Fenster an
@@ -154,4 +141,35 @@ function showControlsPopup() {
 function closeControlsPopup() {
     // Verstecke das Pop-up Fenster
     document.getElementById('controls-popup').style.display = 'none';
+}
+
+function restartGame() {
+    // Verstecke den Game Over Screen
+    const gameOverScreen = document.getElementById('game-over-screen');
+    gameOverScreen.style.display = 'none';
+
+    // Verstecke den Win Screen
+    const winScreen = document.getElementById('win-screen');
+    winScreen.style.display = 'none';
+
+    // Setze das Spiel zurück
+    if (world && typeof world.reset === 'function') {
+        world.reset();
+    }
+
+    // Zeige den Hauptspiel-Canvas wieder an
+    document.getElementById('canvas').style.display = 'block';
+
+    // Starte die Hintergrundmusik erneut, falls sie gestoppt wurde
+    if (!isMuted) {
+        backgroundMusic.play();
+    }
+}
+
+
+
+function showWinScreen() {
+    const winScreen = document.getElementById('win-screen');
+    winScreen.style.display = 'flex'; // Zeige den Win Screen an
+    document.getElementById('canvas').style.display = 'none'; // Verstecke das Spiel
 }

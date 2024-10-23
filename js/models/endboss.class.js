@@ -72,10 +72,13 @@ class Endboss extends MoveableObject {
             currentImageIndex++;
             if (currentImageIndex >= this.IMAGES_DEFEATED.length) {
                 clearInterval(defeatedAnimationInterval); // Stoppe die Animation
-                // Hier kannst du weitere Aktionen hinzufügen, z.B. den Endboss entfernen oder Punkte hinzufügen
+                setTimeout(() => {
+                    showWinScreen(); // Zeige den Winscreen nach 3 Sekunden
+                }, 3000); // 3000 ms = 3 Sekunden Verzögerung nach der Besieg-Animation
             }
         }, 200); // Zeit in Millisekunden zwischen den Bildern der Besieg-Animation
     }
+    
 
     playHitAnimation() {
         this.isHit = true; // Setze den Status auf "getroffen"
