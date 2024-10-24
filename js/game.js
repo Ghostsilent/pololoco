@@ -15,6 +15,8 @@ function init() {
 
     console.log('My Character is', world.character);
 
+
+    backgroundMusic.volume = 0.2; // Lautstärke auf 20% setzen
     // Hintergrundmusik initial abspielen
     backgroundMusic.loop = true; // Endlosschleife aktivieren
     backgroundMusic.play();
@@ -124,7 +126,13 @@ function startGame() {
     document.getElementById('start-button').style.display = 'none'; // Button ausblenden
     document.getElementById('canvas').style.display = 'block';
     document.querySelector('.controls').style.display = 'flex';
+
     init(); // Spiel starten
+
+    // Überprüfe den Mute-Status und pausiere die Musik, falls gemutet
+    if (isMuted) {
+        backgroundMusic.pause(); // Musik stoppen, wenn gemutet
+    }
 }
 
 function showGameOverScreen() {
@@ -144,27 +152,10 @@ function closeControlsPopup() {
 }
 
 function restartGame() {
-    // Verstecke den Game Over Screen
-    const gameOverScreen = document.getElementById('game-over-screen');
-    gameOverScreen.style.display = 'none';
-
-    // Verstecke den Win Screen
-    const winScreen = document.getElementById('win-screen');
-    winScreen.style.display = 'none';
-
-    // Setze das Spiel zurück
-    if (world && typeof world.reset === 'function') {
-        world.reset();
-    }
-
-    // Zeige den Hauptspiel-Canvas wieder an
-    document.getElementById('canvas').style.display = 'block';
-
-    // Starte die Hintergrundmusik erneut, falls sie gestoppt wurde
-    if (!isMuted) {
-        backgroundMusic.play();
-    }
+    // Seite wird neu geladen
+    window.location.reload();
 }
+
 
 
 

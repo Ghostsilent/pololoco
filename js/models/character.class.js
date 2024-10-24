@@ -70,7 +70,8 @@ class Character extends MoveableObject {
     }
 
     constructor() {
-        super().loadImage('img/2_character_pepe/2_walk/W-21.png');
+        super(); // Korrektes Aufrufen des Elternkonstruktors
+        this.loadImage('img/2_character_pepe/2_walk/W-21.png'); // Methode auf 'this' anwenden
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DEAD);
@@ -79,6 +80,11 @@ class Character extends MoveableObject {
         this.applyGravity();
         this.animate();
         this.resetSleepTimer(); // Starte den Inaktivitäts-Timer
+
+        // Setze die Lautstärke der Soundeffekte
+        this.walking_sound.volume = 0.2; // Leiser machen
+        this.deathSound.volume = 0.2;
+        this.jumpSound.volume = 0.2;
     }
 
     loadImages(arr) {

@@ -247,49 +247,5 @@ class World {
         // Stoppt die laufende Zeichnung
         cancelAnimationFrame(this.animationFrameId);
     }
-
-    reset() {
-        // Stoppe die aktuelle Spielschleife
-        this.stopGame();
-    
-        // Setze den Charakter zurück
-        this.character = new Character();
-        this.character.world = this;  // Verknüpfe den Charakter mit der Welt
-    
-        // Setze die gesammelten Flaschen und Münzen zurück
-        this.collectedBottles = 0;
-        this.collectedCoins = 0;
-    
-        // Setze die Statusleisten zurück
-        this.bottleStatusBar.setPercentage(this.collectedBottles);
-        this.coinStatusBar.setPercentage(this.collectedCoins);
-        this.statusBar.setPercentage(this.character.energy);
-    
-        // Setze die Gegner und den Endboss zurück
-        this.level = level1;  // Lade das Level neu
-        this.bottles = [];
-        this.coins = [];
-    
-        // Flaschen und Münzen neu generieren
-        this.createBottles();
-        this.createCoins();
-    
-        // Setze die Endboss-Leiste und Energie zurück
-        this.endbossStatusBar.setPercentage(100);  // Setze die Energie des Endbosses auf 100%
-        this.level.enemies.forEach(enemy => {
-            if (enemy instanceof Endboss) {
-                enemy.energy = 100;  // Setze die Energie des Endbosses zurück
-            }
-        });
-    
-        // Setze die Kameraposition zurück
-        this.camera_x = 0;
-    
-        // Starte das Spiel neu
-        this.run();
-        this.draw();
-    }
-    
-    
     
 }

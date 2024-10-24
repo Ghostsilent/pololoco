@@ -9,13 +9,24 @@ class DrawableObject {
 
 
     loadImage(path) {
-        this.img = new Image()
+        this.img = new Image();
         this.img.src = path;
+    
+        // Fehlerbehandlung, wenn das Bild nicht geladen werden kann
+        this.img.onerror = () => {
+            console.error('Fehler beim Laden des Bildes:', path);
+        };
     }
-
+    
     draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+        // Überprüfe, ob das Bild existiert und vollständig geladen ist
+        if (this.img && this.img.complete) {
+            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        } else {
+            console.warn('Bild nicht geladen oder nicht vorhanden:', this.img);
+        }
     }
+    
 
     drawFrame(ctx) {
         if (this instanceof Character || this instanceof Chicken) {
