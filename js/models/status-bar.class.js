@@ -20,7 +20,6 @@ class StatusBar extends MoveableObject {
         this.setPercentage(100);
     }
 
-    //setPercentage(50)
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES[this.resolveImageIndex()];

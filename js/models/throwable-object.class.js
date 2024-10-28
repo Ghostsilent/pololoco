@@ -13,10 +13,10 @@ class ThrowableObject extends MoveableObject {
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png'
-    ]; // Bildsequenz für die Rotationsanimation
+    ];
 
-    breakSound = new Audio('audio/204694_2570743-lq.mp3'); // Sound für das Zerspringen der Flasche
-    throwSound = new Audio('audio/throw.mp3'); // Sound für das Werfen der Flasche
+    breakSound = new Audio('audio/204694_2570743-lq.mp3');
+    throwSound = new Audio('audio/throw.mp3');
     hasHitGround = false;
     gravityInterval;
     throwInterval;
@@ -30,24 +30,21 @@ class ThrowableObject extends MoveableObject {
         this.height = 60;
         this.width = 50;
         this.loadImages(this.brokenBottleImages);
-        this.loadImages(this.bottleRotationImages); // Lade die Rotationsbilder
-        // Initialisiere den Wurf separat vom Konstruktor
+        this.loadImages(this.bottleRotationImages);
         this.initThrow();
-
     }
 
     initThrow() {
-        // Startet den Wurf und die Bewegung der Flasche
         this.throw();
     }
 
     throw() {
         if (!isMuted) {
-            this.throwSound.play(); // Sound abspielen, wenn nicht gemutet
+            this.throwSound.play();
         }
         this.speedY = 30;
         this.applyGravity();
-        this.startRotation(); // Starte die Rotationsanimation
+        this.startRotation();
         this.throwInterval = setInterval(() => {
             if (!this.hasHitGround) {
                 this.x += 10;
@@ -59,8 +56,8 @@ class ThrowableObject extends MoveableObject {
         let currentImageIndex = 0;
         this.rotationInterval = setInterval(() => {
             this.img = this.imageCache[this.bottleRotationImages[currentImageIndex]];
-            currentImageIndex = (currentImageIndex + 1) % this.bottleRotationImages.length; // Rotiert durch die Bilder
-        }, 100); // Zeit in Millisekunden zwischen den Bildern der Rotation
+            currentImageIndex = (currentImageIndex + 1) % this.bottleRotationImages.length;
+        }, 100);
     }
 
     applyGravity() {
@@ -75,37 +72,34 @@ class ThrowableObject extends MoveableObject {
     }
 
     hitGround() {
-        this.hasHitGround = true; // Setzt den Status auf "hat den Boden berührt"
-        clearInterval(this.gravityInterval); // Stoppe die Gravitation
-        clearInterval(this.throwInterval); // Stoppe die Wurfbewegung
-        clearInterval(this.rotationInterval); // Stoppe die Rotationsanimation
-        this.speedY = 0; // Setzt die Geschwindigkeit auf 0, damit die Flasche nicht weiter fällt
+        this.hasHitGround = true;
+        clearInterval(this.gravityInterval);
+        clearInterval(this.throwInterval);
+        clearInterval(this.rotationInterval);
+        this.speedY = 0;
         if (!isMuted) {
             this.breakSound.play();
         }
-
-        // Starte die Splash-Animation der zerbrochenen Flasche
         this.playSplashAnimation();
     }
 
     playSplashAnimation(callback) {
-        // Sound-Objekt erstellen
-        const splashSound = new Audio('audio/204694_2570743-lq.mp3'); // Pfad zur Sound-Datei
+        const splashSound = new Audio('audio/204694_2570743-lq.mp3');
         if (!isMuted) {
-            splashSound.play(); // Sound abspielen, wenn nicht gemutet
+            splashSound.play();
         }
         let currentImageIndex = 0;
         this.animationInterval = setInterval(() => {
             this.img = this.imageCache[this.brokenBottleImages[currentImageIndex]];
             currentImageIndex++;
             if (currentImageIndex >= this.brokenBottleImages.length) {
-                clearInterval(this.animationInterval); // Stoppe die Animation
-                if (callback) callback(); // Rufe die Callback-Funktion auf, wenn sie definiert ist
+                clearInterval(this.animationInterval);
+                if (callback) callback();
             }
-        }, 100); // Zeit in Millisekunden zwischen den Bildern der Animation
+        }, 100);
     }
 
     remove() {
-        this.x = -1000; // Verschiebt die Flasche aus dem sichtbaren Bereich
+        this.x = -1000;
     }
 }

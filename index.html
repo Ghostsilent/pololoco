@@ -8,7 +8,7 @@
     <link rel="icon" href="img/icons8-gameboy-64.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <title>El pollo loco</title>
-    <!-- Deine Skript-Links hier -->
+
     <script src="js/models/drawable-object.class.js"></script>
     <script src="js/models/movable-object.class.js"></script>
     <script src="js/models/character.class.js"></script>
@@ -53,10 +53,41 @@
         </div>
 
         <!-- START Button -->
-        <button id="start-button" onclick="startGame()"
-            style="display: none; position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%); padding: 15px 30px; font-size: 24px; font-weight: bold; background-color: #8B4513; color: white; border: 2px solid #8B0000; cursor: pointer; border-radius: 10px; box-shadow: 3px 3px 8px #000;">
+        <button id="start-button" class="start-button" onclick="startGame()" style="display: none;">
             START
         </button>
+
+        <!-- Impressum Link -->
+        <div id="impressum-link" class="impressum-link">
+            <a href="#" onclick="showImpressum(); return false;">Impressum</a>
+        </div>
+
+        <!-- Impressum Pop-up -->
+        <div id="impressum-popup" class="popup1" style="display: none;">
+            <div class="popup-content">
+                <span class="close-button" onclick="closeImpressum()">&times;</span>
+                <h2>Impressum</h2>
+                <p>
+                    Angaben gemäß § 5 TMG<br>
+                    <br>
+                    Salmai Safi<br>
+                    Meißelstr. 21<br>
+                    45141 Essen<br>
+                    <br>
+                    <strong>Vertreten durch:</strong><br>
+                    Salmai Safi<br>
+                    <br>
+                    <strong>Kontakt:</strong><br>
+                    Telefon: 0176-458416545<br>
+                    E-Mail: salmai_boy@hotmail.de<br>
+                    <br>
+                    <strong>Haftungsausschluss:</strong><br>
+                <p>Der Inhalt dieser Webseite wurde mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit,
+                    Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden.</p>
+                </p>
+                <!-- Fügen Sie bei Bedarf weitere Informationen hinzu -->
+            </div>
+        </div>
 
         <!-- Steuerungspopup -->
         <div id="controls-popup" class="popup">
@@ -84,14 +115,31 @@
         <div class="controls">
             <img id="sound-icon" src="img/soundimage.png" alt="Sound Icon" class="control-icon" onclick="toggleSound()">
             <img src="img/gamecontroller.png" alt="Gamepad Icon" class="control-icon" onclick="showControlsPopup()">
-            <img src="img/fullscreen.png" alt="Fullscreen Icon" class="control-icon">
+            <!-- <img src="img/fullscreen.png" alt="Fullscreen Icon" class="control-icon"> -->
+        </div>
+        <!-- Touch Controls -->
+        <div id="touch-controls" class="touch-controls">
+            <!-- Bewegungsbuttons (links/rechts) -->
+            <div class="move-buttons">
+                <img src="img/pfeiltaste.png" id="btn-left" class="touch-button">
+                <img src="img/pfeiltaste.png" id="btn-right" class="touch-button">
+            </div>
+            <!-- Aktionsbuttons (springen/werfen) -->
+            <div class="action-buttons">
+                <img src="img/pfeiltaste.png" id="btn-jump" class="touch-button">
+                <img src="img/bottlemobile.png" id="btn-throw" class="touch-button">
+            </div>
+
+            <!-- Rotationshinweis Overlay -->
+            <div id="rotate-device-overlay">
+                <div id="rotate-message">
+                    <div class="rotate-icon"></div>
+                    <p>Rotate your Device</p>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <!-- Game Over Screen außerhalb des game-container entfernen, falls vorhanden -->
-    <!-- <div id="game-over-screen" class="game-over">
-        <img src="img/9_intro_outro_screens/game_over/game_over.png" alt="Game Over" />
-    </div> -->
 
 </body>
 

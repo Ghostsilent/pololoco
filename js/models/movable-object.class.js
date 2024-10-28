@@ -17,14 +17,13 @@ class MoveableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) {
-            return this.y < 370; // Angenommen, die Bodenhöhe ist bei y = 340. Passe diesen Wert an deine Spiellogik an.
+            return this.y < 370; 
         } else {
-            return this.y < 180; // Standardbedingung für andere Objekte
+            return this.y < 180; 
         }
     }
 
 
-    // characte.isColliding(Chicken)
     isColliding(mo) {
         return this.x + this.width > mo.x &&
             this.y + this.height > mo.y &&
@@ -42,8 +41,8 @@ class MoveableObject extends DrawableObject {
     }
 
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit; //Difference in ms
-        timepassed = timepassed / 1000; // Difference in s
+        let timepassed = new Date().getTime() - this.lastHit; 
+        timepassed = timepassed / 1000; 
         return timepassed < 1;
     }
 

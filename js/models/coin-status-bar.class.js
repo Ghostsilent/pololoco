@@ -1,20 +1,20 @@
 class CoinStatusBar extends MoveableObject {
     IMAGES = [
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',   // 0 Münzen
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',   // 2 Münzen
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/40.png',   // 4 Münzen
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png',   // 6 Münzen
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png',   // 8 Münzen
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png'   // 10 Münzen
+        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',   
+        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',   
+        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/40.png',  
+        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png',   
+        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png',   
+        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png'  
     ];
 
-    percentage = 0; // Start mit 0 Münzen
+    percentage = 0; 
 
     constructor() {
         super();
         this.loadImages(this.IMAGES);
         this.x = 40;
-        this.y = 80; // Position unter der Flaschenstatusleiste
+        this.y = 80; 
         this.width = 200;
         this.height = 50;
         this.setPercentage(0);

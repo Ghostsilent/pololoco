@@ -45,14 +45,12 @@ const level1 = new Level(
 
 level1.enemies.forEach((enemy, index) => {
     if (enemy instanceof Chicken) {
-        // Zufällige X-Position auf der Spielfläche zwischen 200 und 2000 Pixeln
         enemy.x = 200 + Math.random() * 1800; 
-        enemy.y = 365; // Y-Position auf dem Boden
+        enemy.y = 365;
     }
     
     if (enemy instanceof Chick) {
-        // Zufällige X-Position auf der Spielfläche zwischen 200 und 2000 Pixeln
         enemy.x = 200 + Math.random() * 1800; 
-        enemy.y = 385; // Y-Position auf dem Boden
+        enemy.y = 385; 
     }
 });

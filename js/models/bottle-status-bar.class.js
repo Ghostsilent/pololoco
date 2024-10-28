@@ -1,20 +1,20 @@
 class BottleStatusBar extends MoveableObject {
     IMAGES = [
-        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',   // 0 Flaschen
-        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',   // 2 Flaschen
-        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png',   // 4 Flaschen
-        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png',   // 6 Flaschen
-        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png',   // 8 Flaschen
-        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png'   // 10 Flaschen
+        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',  
+        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',   
+        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png',   
+        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png',   
+        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png',   
+        'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png'  
     ];
 
-    percentage = 0; // Start mit 0 Flaschen
+    percentage = 0; 
 
     constructor() {
         super();
         this.loadImages(this.IMAGES);
         this.x = 40;
-        this.y = 40; // Position unter der Gesundheitsleiste
+        this.y = 40; 
         this.width = 200;
         this.height = 50;
         this.setPercentage(0);

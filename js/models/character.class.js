@@ -2,9 +2,10 @@ class Character extends MoveableObject {
     height = 250;
     y = 80;
     speed = 10;
-    sleepTimeout; // Timer für die Inaktivität
-    sleepInterval; // Intervall für die Schlafanimation
-    isSleeping = false; // Status, ob der Spieler schläft
+    sleepTimeout;
+    sleepInterval;
+    isIdle = false;
+    isSleeping = false;
 
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
@@ -56,33 +57,44 @@ class Character extends MoveableObject {
         'img/2_character_pepe/4_hurt/H-43.png'
     ];
 
+    IMAGES_IDLE = [
+        'img/2_character_pepe/1_idle/idle/I-1.png',
+        'img/2_character_pepe/1_idle/idle/I-2.png',
+        'img/2_character_pepe/1_idle/idle/I-3.png',
+        'img/2_character_pepe/1_idle/idle/I-4.png',
+        'img/2_character_pepe/1_idle/idle/I-5.png',
+        'img/2_character_pepe/1_idle/idle/I-6.png',
+        'img/2_character_pepe/1_idle/idle/I-7.png',
+        'img/2_character_pepe/1_idle/idle/I-8.png',
+        'img/2_character_pepe/1_idle/idle/I-9.png',
+        'img/2_character_pepe/1_idle/idle/I-10.png'
+    ];
+
     world;
     walking_sound = new Audio('audio/running.mp3')
-    deathSound = new Audio('audio/gameover.mp3'); // Sound-Datei für das Sterben des Spielers
-    jumpSound = new Audio('audio/jump.mp3'); // Sound-Datei für das Springen
+    deathSound = new Audio('audio/gameover.mp3');
+    jumpSound = new Audio('audio/jump.mp3');
 
-    // Neue Eigenschaften zum Speichern der Interval-IDs
     movementInterval;
     animationInterval;
 
     jumpOnEnemy() {
-        this.speedY = 25; // Setzt die Sprunghöhe
+        this.speedY = 25;
     }
 
     constructor() {
-        super(); // Korrektes Aufrufen des Elternkonstruktors
-        this.loadImage('img/2_character_pepe/2_walk/W-21.png'); // Methode auf 'this' anwenden
+        super();
+        this.loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
-        this.loadImages(this.IMAGES_SLEEPING); // Lade Schlafbilder
+        this.loadImages(this.IMAGES_SLEEPING);
+        this.loadImages(this.IMAGES_IDLE);
         this.applyGravity();
         this.animate();
-        this.resetSleepTimer(); // Starte den Inaktivitäts-Timer
-
-        // Setze die Lautstärke der Soundeffekte
-        this.walking_sound.volume = 0.2; // Leiser machen
+        this.resetSleepTimer();
+        this.walking_sound.volume = 0.2;
         this.deathSound.volume = 0.2;
         this.jumpSound.volume = 0.2;
     }
@@ -101,16 +113,46 @@ class Character extends MoveableObject {
     }
 
     resetSleepTimer() {
-        clearTimeout(this.sleepTimeout); // Lösche den vorherigen Timer
-        this.isSleeping = false; // Setze den Schlafstatus zurück
+        clearTimeout(this.sleepTimeout);
+        clearTimeout(this.idleTimeout);
+        this.isSleeping = false;
+        this.isIdle = false;
+    
         if (this.sleepInterval) {
-            clearInterval(this.sleepInterval); // Stoppe die Schlafanimation
+            clearInterval(this.sleepInterval);
         }
-        this.loadImage(this.IMAGES_WALKING[0]); // Setze das Bild auf den Standbild
-        // Setze den Timer für die Schlafanimation auf 5 Sekunden
+        if (this.idleInterval) {
+            clearInterval(this.idleInterval);
+        }
+    
+        if (this.isSleeping || this.isIdle) {
+            this.loadImage(this.IMAGES_WALKING[0]);
+        }
+    
+        this.idleTimeout = setTimeout(() => {
+            this.startIdleAnimation();
+        }, 2000);
+    
         this.sleepTimeout = setTimeout(() => {
             this.startSleepAnimation();
         }, 5000);
+    }
+    
+    startIdleAnimation() {
+        this.isIdle = true;
+        let currentImageIndex = 0;
+        this.idleInterval = setInterval(() => {
+            let img = this.imageCache[this.IMAGES_IDLE[currentImageIndex]];
+            if (img) {
+                this.img = img;
+            } else {
+                console.warn('Bild nicht im Cache gefunden:', this.IMAGES_IDLE[currentImageIndex]);
+            }
+            currentImageIndex++;
+            if (currentImageIndex >= this.IMAGES_IDLE.length) {
+                currentImageIndex = 0;
+            }
+        }, 500);
     }
 
     startSleepAnimation() {
@@ -119,48 +161,47 @@ class Character extends MoveableObject {
         this.sleepInterval = setInterval(() => {
             let img = this.imageCache[this.IMAGES_SLEEPING[currentImageIndex]];
             if (img) {
-                this.img = img; // Zeichnet das Bild nur, wenn es vorhanden ist
+                this.img = img;
             } else {
                 console.warn('Bild nicht im Cache gefunden:', this.IMAGES_SLEEPING[currentImageIndex]);
             }
             currentImageIndex++;
             if (currentImageIndex >= this.IMAGES_SLEEPING.length) {
-                currentImageIndex = 0; // Wiederhole die Schlafanimation
+                currentImageIndex = 0;
             }
-        }, 200); // Zeit in Millisekunden zwischen den Bildern
+        }, 200);
     }
 
     animate() {
-        // Speichern der Interval-IDs
         this.movementInterval = setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
                 if (!isMuted) {
-                    this.walking_sound.play(); // Nur abspielen, wenn nicht gemutet
+                    this.walking_sound.play();
                 }
-                this.resetSleepTimer(); // Timer zurücksetzen
+                this.resetSleepTimer();
             }
 
             if (this.world.keyboard.LEFT && this.x > 0) {
                 this.moveLeft();
                 this.otherDirection = true;
                 if (!isMuted) {
-                    this.walking_sound.play(); // Nur abspielen, wenn nicht gemutet
+                    this.walking_sound.play();
                 }
-                this.resetSleepTimer(); // Timer zurücksetzen
+                this.resetSleepTimer();
             }
 
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
-                this.resetSleepTimer(); // Timer zurücksetzen
+                this.resetSleepTimer();
             }
 
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-        let deathSoundPlayed = false; // Variable, um zu prüfen, ob der Sound bereits abgespielt wurde
+        let deathSoundPlayed = false;
 
         this.animationInterval = setInterval(() => {
             if (this.isDead()) {
@@ -170,27 +211,28 @@ class Character extends MoveableObject {
                 }
                 this.playAnimation(this.IMAGES_DEAD);
                 setTimeout(() => {
-                    showGameOverScreen(); // Zeigt den Game Over-Bildschirm
-                    this.world.stopGame(); // Hier wird das Spiel gestoppt
-                }, 2000); // 2 Sekunden Verzögerung nach dem Tod des Spielers
+                    showGameOverScreen();
+                    this.world.stopGame();
+                }, 2000);
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
+            } else if (this.isSleeping) {
+            } else if (this.isIdle) {
             } else {
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                     this.playAnimation(this.IMAGES_WALKING);
                 }
             }
-        }, 50);
+        }, 120);
     }
 
     jump() {
         if (!isMuted) {
-            this.jumpSound.play(); // Sound abspielen, wenn der Spieler springt
+            this.jumpSound.play();
         }
         this.speedY = 30;
-        this.resetSleepTimer(); // Timer zurücksetzen
+        this.resetSleepTimer();
     }
-
 }

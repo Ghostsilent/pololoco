@@ -1,23 +1,23 @@
 class EndbossStatusBar extends MoveableObject {
     IMAGES = [
-        'img/7_statusbars/2_statusbar_endboss/orange/orange0.png',   // 0% Health
-        'img/7_statusbars/2_statusbar_endboss/orange/orange20.png',  // 20% Health
-        'img/7_statusbars/2_statusbar_endboss/orange/orange40.png',  // 40% Health
-        'img/7_statusbars/2_statusbar_endboss/orange/orange60.png',  // 60% Health
-        'img/7_statusbars/2_statusbar_endboss/orange/orange80.png',  // 80% Health
-        'img/7_statusbars/2_statusbar_endboss/orange/orange100.png'  // 100% Health
+        'img/7_statusbars/2_statusbar_endboss/orange/orange0.png',   
+        'img/7_statusbars/2_statusbar_endboss/orange/orange20.png',  
+        'img/7_statusbars/2_statusbar_endboss/orange/orange40.png',  
+        'img/7_statusbars/2_statusbar_endboss/orange/orange60.png',  
+        'img/7_statusbars/2_statusbar_endboss/orange/orange80.png',  
+        'img/7_statusbars/2_statusbar_endboss/orange/orange100.png'  
     ];
 
-    percentage = 100; // Startet mit 100% Health
+    percentage = 100; 
 
     constructor() {
         super();
         this.loadImages(this.IMAGES);
-        this.x = 500;  // Position auf dem Bildschirm anpassen
-        this.y = 50;    // Position unter der Spielerstatusleiste
+        this.x = 500;  
+        this.y = 50;   
         this.width = 200;
         this.height = 40;
-        this.setPercentage(100); // Initial auf 100% setzen
+        this.setPercentage(100); 
     }
 
     setPercentage(percentage) {
