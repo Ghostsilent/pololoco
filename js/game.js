@@ -1,3 +1,4 @@
+// main.js
 let canvas;
 let world;
 let keyboard = new Keyboard();
@@ -7,6 +8,9 @@ const backgroundMusic = new Audio('audio/background.mp3');
 backgroundMusic.volume = 0.2;
 let isMuted = false;
 
+/**
+ * Initialisiert das Spiel, setzt das Canvas und startet die Hintergrundmusik.
+ */
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
@@ -19,6 +23,9 @@ function init() {
     }
 }
 
+/**
+ * Schaltet die Soundausgabe um und aktualisiert die Sound-Icons entsprechend.
+ */
 function toggleSound() {
     isMuted = !isMuted;
     const soundIcon = document.getElementById('sound-icon');
@@ -32,6 +39,9 @@ function toggleSound() {
     updateAllSounds();
 }
 
+/**
+ * Aktualisiert den Soundstatus aller relevanten Sounds im Spiel basierend auf dem aktuellen Mute-Status.
+ */
 function updateAllSounds() {
     if (world && world.character) {
         const sounds = [world.character.walking_sound, world.character.jumpSound, world.character.deathSound];
@@ -48,6 +58,7 @@ function updateAllSounds() {
     }
 }
 
+// Event Listener für Tastendruck
 window.addEventListener("keydown", (e) => {
     if (e.keyCode == 39) {
         keyboard.RIGHT = true;
@@ -69,6 +80,7 @@ window.addEventListener("keydown", (e) => {
     }
 });
 
+// Event Listener für das Loslassen der Taste
 window.addEventListener("keyup", (e) => {
     if (e.keyCode == 39) {
         keyboard.RIGHT = false;
@@ -90,6 +102,9 @@ window.addEventListener("keyup", (e) => {
     }
 });
 
+/**
+ * Zeigt den Startbildschirm an und lädt das Startbild.
+ */
 function showStartScreen() {
     const startScreenCanvas = document.getElementById('start-screen-canvas');
     const ctx = startScreenCanvas.getContext('2d');
@@ -101,10 +116,13 @@ function showStartScreen() {
     document.getElementById('start-button').style.display = 'block';
 }
 
+/**
+ * Startet das Spiel, versteckt den Startbildschirm und zeigt die Spielanzeige.
+ */
 function startGame() {
     document.getElementById('start-screen-canvas').style.display = 'none';
     document.getElementById('start-button').style.display = 'none';
-    document.getElementById('impressum-link').style.display = 'none';
+    /* document.getElementById('impressum-link').style.display = 'none'; */
     document.getElementById('canvas').style.display = 'block';
     document.querySelector('.controls').style.display = 'flex';
     init();
@@ -122,35 +140,59 @@ function startGame() {
     }
 }
 
+/**
+ * Zeigt den Game Over Bildschirm an.
+ */
 function showGameOverScreen() {
     const gameOverScreen = document.getElementById('game-over-screen');
     gameOverScreen.style.display = 'flex';
 }
 
+/**
+ * Zeigt das Steuerungs-Popup an.
+ */
 function showControlsPopup() {
     document.getElementById('controls-popup').style.display = 'block';
 }
 
+/**
+ * Schließt das Steuerungs-Popup.
+ */
 function closeControlsPopup() {
     document.getElementById('controls-popup').style.display = 'none';
 }
 
+/**
+ * Startet das Spiel neu, indem die Seite neu geladen wird.
+ */
 function restartGame() {
     window.location.reload();
 }
 
+/**
+ * Zeigt den Sieg-Bildschirm an und versteckt das Spiel-Canvas.
+ */
 function showWinScreen() {
     const winScreen = document.getElementById('win-screen');
     winScreen.style.display = 'flex';
     document.getElementById('canvas').style.display = 'none';
 }
 
+/**
+ * Richtet die Touch-Steuerungen für mobile Geräte ein.
+ */
 function setupTouchControls() {
     const btnLeft = document.getElementById('btn-left');
     const btnRight = document.getElementById('btn-right');
     const btnJump = document.getElementById('btn-jump');
     const btnThrow = document.getElementById('btn-throw');
 
+    /**
+     * Fügt Touch-Ereignisse zu einem Button hinzu, um eine bestimmte Tasteneigenschaft zu setzen.
+     *
+     * @param {HTMLElement} button - Der Button, der Touch-Ereignisse empfangen soll.
+     * @param {string} keyProperty - Die Tasteneigenschaft, die bei Touch-Ereignissen gesetzt werden soll.
+     */
     function addTouchEvent(button, keyProperty) {
         button.addEventListener('touchstart', (e) => {
             e.preventDefault();
@@ -168,14 +210,23 @@ function setupTouchControls() {
     addTouchEvent(btnThrow, 'D');
 }
 
+/**
+ * Zeigt das Impressum-Popup an.
+ */
 function showImpressum() {
     document.getElementById('impressum-popup').style.display = 'block';
 }
 
+/**
+ * Schließt das Impressum-Popup.
+ */
 function closeImpressum() {
     document.getElementById('impressum-popup').style.display = 'none';
 }
 
+/**
+ * Überprüft die Ausrichtung des Geräts und zeigt ggf. eine Overlay an.
+ */
 function checkOrientation() {
     const overlay = document.getElementById('rotate-device-overlay');
     const width = window.innerWidth;
@@ -190,3 +241,26 @@ function checkOrientation() {
 window.addEventListener('resize', checkOrientation);
 window.addEventListener('orientationchange', checkOrientation);
 window.addEventListener('load', checkOrientation);
+
+window.onload = function() {
+    showStartScreen();
+    if (isTouchDevice()) {
+        showTouchControls();
+    }
+};
+
+/**
+ * Überprüft, ob das Gerät ein Touch-Gerät ist.
+ *
+ * @returns {boolean} Wahr, wenn das Gerät Touch-fähig ist, sonst falsch.
+ */
+function isTouchDevice() {
+    return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+}
+
+/**
+ * Zeigt die Touch-Steuerungen an, falls es sich um ein Touch-Gerät handelt.
+ */
+function showTouchControls() {
+    document.getElementById('touch-controls').style.display = 'flex';
+}

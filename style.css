@@ -93,7 +93,7 @@ button:hover {
     border-radius: 12px;
     padding: 20px;
     max-width: 400px;
-    margin: 15% auto;
+    margin:auto;
     position: relative;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
     font-family: 'Old West', serif;
@@ -245,6 +245,10 @@ only screen and (max-height: 420px) {
     z-index: 50;
 }
 
+#touch-controls {
+    display: none; /* Standardmäßig ausblenden */
+}
+
 .move-buttons {
     display: flex;
     gap: 20px;
@@ -289,11 +293,11 @@ only screen and (max-height: 420px) {
     display: none;
 }
 
-@media only screen and (max-width: 932px) {
+/* @media only screen and (max-width: 932px) {
     #touch-controls {
         display: flex;
     }
-}
+} */
 
 #start-button {
     position: absolute;
@@ -737,5 +741,21 @@ only screen and (max-height: 420px) {
     #game-container {
         height: 60vh;
         max-width: 100vh;
+    }
+}
+
+
+#impressum-popup .popup-content {
+    max-height: 80vh; /* Begrenze die Höhe des Popups */
+    overflow-y: auto; /* Scrollbalken bei Überlauf aktivieren */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (pointer: coarse) {
+    #touch-controls {
+        display: flex;
     }
 }

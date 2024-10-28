@@ -1,12 +1,54 @@
+/**
+ * Repräsentiert einen Charakter im Spiel, der sich bewegen und verschiedene Animationen ausführen kann.
+ * @extends MoveableObject
+ */
 class Character extends MoveableObject {
+    /**
+     * Die Höhe des Charakters.
+     * @type {number}
+     */
     height = 250;
+
+    /**
+     * Die y-Position des Charakters.
+     * @type {number}
+     */
     y = 80;
+
+    /**
+     * Die Geschwindigkeit des Charakters.
+     * @type {number}
+     */
     speed = 10;
+
+    /**
+     * Timeout für den Schlafmodus des Charakters.
+     * @type {number | undefined}
+     */
     sleepTimeout;
+
+    /**
+     * Intervall für die Schlafanimation des Charakters.
+     * @type {number | undefined}
+     */
     sleepInterval;
+
+    /**
+     * Gibt an, ob der Charakter im Leerlauf ist.
+     * @type {boolean}
+     */
     isIdle = false;
+
+    /**
+     * Gibt an, ob der Charakter schläft.
+     * @type {boolean}
+     */
     isSleeping = false;
 
+    /**
+     * Bilder für die Geh-Animation des Charakters.
+     * @type {string[]}
+     */
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -16,6 +58,10 @@ class Character extends MoveableObject {
         'img/2_character_pepe/2_walk/W-26.png'
     ];
 
+    /**
+     * Bilder für die Sprung-Animation des Charakters.
+     * @type {string[]}
+     */
     IMAGES_JUMPING = [
         'img/2_character_pepe/3_jump/J-31.png',
         'img/2_character_pepe/3_jump/J-32.png',
@@ -28,6 +74,10 @@ class Character extends MoveableObject {
         'img/2_character_pepe/3_jump/J-39.png'
     ];
 
+    /**
+     * Bilder für die Schlafanimation des Charakters.
+     * @type {string[]}
+     */
     IMAGES_SLEEPING = [
         'img/2_character_pepe/1_idle/long_idle/I-11.png',
         'img/2_character_pepe/1_idle/long_idle/I-12.png',
@@ -41,6 +91,10 @@ class Character extends MoveableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
 
+    /**
+     * Bilder für die Todesanimation des Charakters.
+     * @type {string[]}
+     */
     IMAGES_DEAD = [
         'img/2_character_pepe/5_dead/D-51.png',
         'img/2_character_pepe/5_dead/D-52.png',
@@ -51,12 +105,20 @@ class Character extends MoveableObject {
         'img/2_character_pepe/5_dead/D-57.png'
     ];
 
+    /**
+     * Bilder für die Verletzungsanimation des Charakters.
+     * @type {string[]}
+     */
     IMAGES_HURT = [
         'img/2_character_pepe/4_hurt/H-41.png',
         'img/2_character_pepe/4_hurt/H-42.png',
         'img/2_character_pepe/4_hurt/H-43.png'
     ];
 
+    /**
+     * Bilder für die Leerlaufanimation des Charakters.
+     * @type {string[]}
+     */
     IMAGES_IDLE = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
         'img/2_character_pepe/1_idle/idle/I-2.png',
@@ -70,18 +132,52 @@ class Character extends MoveableObject {
         'img/2_character_pepe/1_idle/idle/I-10.png'
     ];
 
+    /**
+     * Die Welt, in der sich der Charakter befindet.
+     * @type {Object}
+     */
     world;
-    walking_sound = new Audio('audio/running.mp3')
+
+    /**
+     * Audiodatei für das Gehgeräusch.
+     * @type {Audio}
+     */
+    walking_sound = new Audio('audio/running.mp3');
+
+    /**
+     * Audiodatei für das Todesgeräusch.
+     * @type {Audio}
+     */
     deathSound = new Audio('audio/gameover.mp3');
+
+    /**
+     * Audiodatei für das Sprunggeräusch.
+     * @type {Audio}
+     */
     jumpSound = new Audio('audio/jump.mp3');
 
+    /**
+     * Intervall für die Bewegung des Charakters.
+     * @type {number | undefined}
+     */
     movementInterval;
+
+    /**
+     * Intervall für die Animation des Charakters.
+     * @type {number | undefined}
+     */
     animationInterval;
 
+    /**
+     * Setzt den Charakter dazu, auf einen Gegner zu springen.
+     */
     jumpOnEnemy() {
         this.speedY = 25;
     }
 
+    /**
+     * Konstruktor, der den Charakter initialisiert und die Bilder und Animationen lädt.
+     */
     constructor() {
         super();
         this.loadImage('img/2_character_pepe/2_walk/W-21.png');
@@ -99,6 +195,10 @@ class Character extends MoveableObject {
         this.jumpSound.volume = 0.2;
     }
 
+    /**
+     * Lädt die angegebenen Bilder und speichert sie im Cache.
+     * @param {string[]} arr - Array der Bildpfade.
+     */
     loadImages(arr) {
         arr.forEach((path) => {
             let img = new Image();
@@ -112,6 +212,9 @@ class Character extends MoveableObject {
         });
     }
 
+    /**
+     * Setzt den Schlaf-Timer zurück und startet gegebenenfalls Leerlauf- oder Schlafanimationen.
+     */
     resetSleepTimer() {
         clearTimeout(this.sleepTimeout);
         clearTimeout(this.idleTimeout);
@@ -131,13 +234,16 @@ class Character extends MoveableObject {
     
         this.idleTimeout = setTimeout(() => {
             this.startIdleAnimation();
-        }, 2000);
+        }, 100);
     
         this.sleepTimeout = setTimeout(() => {
             this.startSleepAnimation();
         }, 5000);
     }
-    
+
+    /**
+     * Startet die Leerlaufanimation des Charakters.
+     */
     startIdleAnimation() {
         this.isIdle = true;
         let currentImageIndex = 0;
@@ -155,6 +261,9 @@ class Character extends MoveableObject {
         }, 500);
     }
 
+    /**
+     * Startet die Schlafanimation des Charakters.
+     */
     startSleepAnimation() {
         this.isSleeping = true;
         let currentImageIndex = 0;
@@ -172,6 +281,9 @@ class Character extends MoveableObject {
         }, 200);
     }
 
+    /**
+     * Startet die Animationen und Bewegungen des Charakters.
+     */
     animate() {
         this.movementInterval = setInterval(() => {
             this.walking_sound.pause();
@@ -228,6 +340,9 @@ class Character extends MoveableObject {
         }, 120);
     }
 
+    /**
+     * Lässt den Charakter springen.
+     */
     jump() {
         if (!isMuted) {
             this.jumpSound.play();

@@ -1,3 +1,4 @@
+// endbossStatusBar.class.js
 class EndbossStatusBar extends MoveableObject {
     IMAGES = [
         'img/7_statusbars/2_statusbar_endboss/orange/orange0.png',   
@@ -10,6 +11,9 @@ class EndbossStatusBar extends MoveableObject {
 
     percentage = 100; 
 
+    /**
+     * Erstellt eine neue Statusleiste für den Endboss und initialisiert die Position und Größe.
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);
@@ -20,12 +24,22 @@ class EndbossStatusBar extends MoveableObject {
         this.setPercentage(100); 
     }
 
+    /**
+     * Setzt den aktuellen Prozentsatz der Statusleiste und aktualisiert das angezeigte Bild entsprechend.
+     *
+     * @param {number} percentage - Der neue Prozentsatz für die Statusleiste.
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Bestimmt den Index des Bildes, das basierend auf dem aktuellen Prozentsatz angezeigt werden soll.
+     *
+     * @returns {number} Der Index des passenden Bildes in der IMAGES-Array.
+     */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;
